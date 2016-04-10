@@ -1,0 +1,20 @@
+---
+- name: reset the vagrant_Cachier stuff
+  become: yes
+  become_method: sudo
+  command: mkdir /var/lib/apt/lists
+
+- name: reset vagrant cache stuff
+  become: yes
+  become_method: sudo
+  command: mkdir /var/cache/apt/archives/
+
+- name: autoremove junk
+  become: yes
+  become_method: sudo
+  command: apt-get autoremove
+
+- name: remove insecure connection keypair
+  become: yes
+  become_method: sudo
+  command: rm -rf /home/android/.ssh/authorized_keys

@@ -1,0 +1,54 @@
+---
+- name: install tools from ubuntu repositories
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  # - gcc-arm-linux-androidabi
+  # - gcc-i686-linux-android
+  - jmtpfs
+  - sqlcipher
+  - sqlite
+  - sqlitebrowser
+  # - sqliteman
+  - keepnote
+  - qemu
+  - qemu-system
+  - qemu-system-arm
+  - qemu-user
+  - qemu-utils
+  - jasmin-sable
+  - meld
+  - python-meld3
+
+
+- name: notsure where this fits
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - python-frida
+  - geany
+  - geany-plugin-treebrowser
+  
+
+
+
+- name: optional packages but might be useful
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - openvpn
+  # - pdfcrack
+  - ratproxy 
+  - proxychains
+  - tsocks
+  - redsocks
+  - websockify
+  - wifite
+  - chaosreader
+  - dsniff
+  - chromium
+
+

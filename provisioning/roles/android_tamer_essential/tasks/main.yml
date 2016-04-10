@@ -1,0 +1,222 @@
+---
+- name: get the current users home
+  shell: echo $HOME
+  register: user_home
+  sudo: no
+
+- name: get the current users name
+  shell: id -u -n
+  register: user_name
+  sudo: no
+
+- name: get the current users group
+  shell: id -g -n
+  register: user_group
+  sudo: no
+
+- name: update apt-get cache 
+  become: yes
+  become_method: sudo
+  apt: update_cache=yes
+
+- name: upgrade to latest
+  become: yes
+  become_method: sudo
+  apt: upgrade=dist
+
+- name: install packages essential for android
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - openjdk-7-jdk
+  - default-jdk
+  - openjdk-8-jdk
+  - libc6-i386 
+  - lib32stdc++6 
+  - lib32gcc1 
+  - lib32ncurses5 
+  - zlib1g 
+  - lib32z1
+  - htop
+  - vim
+
+# "
+
+- name: install more essential packages found in default repositories
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - aapt
+  - pidcat
+  - dex2jar
+  - enjarify
+  - apktool
+  - jd-gui
+  - jad
+  - jadx
+  - smali
+
+# "
+
+- name: Installing PIP
+  become: yes
+  become_method: sudo
+  apt: pkg=python-pip state=installed
+
+- name: installing ubuntu mate packages
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - mate-desktop-environment
+  - mate-system-tools
+  - mate-netspeed
+  - mate-gnome-main-menu-applet
+  - mozo
+  - lightdm
+
+- name: Mate specific packages
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - caja-gksu
+  - caja-extensions-common
+  - caja-sendto
+  - caja-open-terminal
+  - caja-share
+
+# "
+
+
+- service: name=lightdm enabled=yes
+  become: yes
+  become_method: sudo
+
+#- name: restart machine
+#    become: yes
+#   become_method: sudo
+#  command: shutdown -r now "Restarting the GUI system"
+#  async: 0
+#  poll: 0
+#  ignore_errors: true
+
+#- name: waiting for server to come back
+#  local_action: wait_for host={{ inventory_hostname }}
+#                state=started
+#  sudo: false
+
+- name: temp directory created
+  become: yes
+  become_method: sudo
+  command: mkdir /tmp/x
+  ignore_errors: true
+
+- name: mount virtualbox guest aditions in it
+  become: yes
+  become_method: sudo
+  command: mount /dev/sr0 /tmp/x
+  ignore_errors: true
+
+- name: Reconfiguring Linux guest adition to support GUI
+  become: yes
+  become_method: sudo
+  command: /tmp/x/VBoxLinuxAdditions.run 
+  ignore_errors: true
+
+#- name: restart machine
+#    become: yes
+#    become_method: sudo
+#  command: shutdown -r now "Ansible updates triggered"
+#  async: 0
+#  poll: 0
+#  ignore_errors: true
+
+#- name: waiting for server to come back
+#  local_action: wait_for host={{ inventory_hostname }}
+#                state=started
+#  sudo: false
+
+- name: Configure tamer_specific application peferences 
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - terminator
+  - synaptic
+  - git
+  - subversion
+  - screen
+  - tmux
+  - fizsh
+  - powerline
+  - exfat-fuse
+  - exfat-utils
+  - geoip-bin
+  - geoip-database-extra
+  - mtp-tools
+  - bpython
+  - cherrytree
+
+# Fonts also need to go and google fonts need to be installed"
+  
+
+- name: make /opt dir for Arsenal
+  file: path="/opt/Arsenal" state=directory
+  become: yes
+  become_method: sudo
+
+- name: change permission of /Arsenal
+  become: yes
+  become_method: sudo
+  action: file path="/opt/Arsenal" recurse=yes state=directory owner={{ user_name.stdout }} group={{ user_group.stdout }}
+
+
+#- name: make Cache dir for Arsenal
+#  file: path="/opt/Arsenal/Cache" state=directory
+
+
+# Setting up ZSH
+
+- name: Clone oh-my-zsh repo
+  git: repo=https://github.com/robbyrussell/oh-my-zsh.git dest=/home/{{ user_name.stdout }}/.oh-my-zsh
+
+- name: Create conf folder in home directory
+  file: path=/home/{{ user_name.stdout }}/conf/ state=directory owner={{ user_name.stdout }}
+
+- name: deploy .zshrc
+  template: src=files/zshrc.in dest=/home/{{ user_name.stdout }}/conf/zshrc owner={{ user_name.stdout }}
+
+- name: remove standard zshrc
+  file: path=/home/{{ user_name.stdout }}/.zshrc state=absent
+
+- name: symlink zshrc
+  file: path=/home/{{ user_name.stdout }}/.zshrc src=/home/{{ user_name.stdout }}/conf/zshrc state=link owner={{ user_name.stdout }}
+
+- name: Set zsh as default shell
+  user: name={{ user_name.stdout }} shell=/bin/zsh
+  become: yes
+  become_method: sudo
+
+- name: Adding ZSH Autosuggestions
+  git: repo=https://github.com/zsh-users/zsh-autosuggestions dest=/{{ user_home.stdout }}/.zsh/zsh-autosuggestions
+
+- name: configuring Autosuggestions
+  action: lineinfile dest={{ user_home.stdout }}/.zshrc line="source /home/{{ user_name.stdout }}/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
+
+- name: configuring vim
+  template: src=files/vimrc dest={{ user_home.stdout }}/.vimrc owner={{ user_name.stdout }}
+
+- name: create terminator config directory.
+  sudo: no
+  command: mkdir -p {{ user_home.stdout }}/.config/terminator/
+  ignore_errors: true
+
+- name: configuring terminator
+  template: src=files/terminator_config dest={{ user_home.stdout }}/.config/terminator/config owner={{ user_name.stdout }}
+
+- name: Set terminator as default shell
+  command: update-alternatives --set x-terminal-emulator /usr/bin/terminator
+

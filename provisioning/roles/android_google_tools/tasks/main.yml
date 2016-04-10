@@ -1,0 +1,135 @@
+---
+- name: get the current users home
+  shell: echo $HOME
+  register: user_home
+  sudo: no
+
+- name: get the current users name
+  shell: id -u -n
+  register: user_name
+  sudo: no
+
+- name: get the current users group
+  shell: id -g -n
+  register: user_group
+  sudo: no
+
+
+- name: install Google Tools adb and others
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - fonts-roboto
+
+
+- stat: path={{ ansible_cache_dir }}/{{ android_ndk_zip }} follow=yes
+  register: ndk_exist
+  ignore_errors: True
+
+- name: downloading android-ndk
+  get_url: dest={{ ansible_cache_dir }} url={{ android_ndk_url }}
+  when: ndk_exist.stat.exists == false
+
+- name: copy to arsenal
+  command: cp {{ ansible_cache_dir }}/{{ android_ndk_zip }} /opt/Arsenal/
+
+#- name: chown files
+#  command: chmod a+x /opt/Arsenal/{{ android_ndk_zip }}
+
+- name: unpack Android NDK
+  action: unarchive copy=no src={{ ansible_cache_dir }}/{{ android_ndk_zip }} dest=/opt/Arsenal/
+  sudo: no
+
+- stat: path={{ ansible_cache_dir }}/{{ studio_file_name }} follow=yes
+  register: studio_exist
+  ignore_errors: True
+
+- name: Download AndroidStudio 
+  get_url: dest={{ ansible_cache_dir }} url={{ studio_download_url }}
+  when: studio_exist.stat.exists == false 
+
+
+- name: Create studio_folder
+  become: yes
+  become_method: sudo
+  command: mkdir /opt/Arsenal/{{ studio_folder }}
+  ignore_errors: true
+
+- name: change permission of studio_folder
+  become: yes
+  become_method: sudo
+  action: file path=/opt/Arsenal/{{ studio_folder }} recurse=yes state=directory owner={{ user_name.stdout }} group={{ user_group.stdout }}
+
+
+- name: unpack Android Studio
+  action: unarchive copy=no src={{ ansible_cache_dir }}/{{ studio_file_name }} dest=/opt/Arsenal/
+  sudo: no
+
+# Need to match the usecase here
+- name: chown files
+  action: file path=/opt/Arsenal/{{ studio_folder }} recurse=yes state=directory owner={{ user_name.stdout }} group={{ user_group.stdout }}
+
+- stat: path={{ ansible_cache_dir }}/{{ android_zipfile }} follow=yes
+  register: sdk_exist
+  ignore_errors: True
+
+
+- name: Download android-sdk
+  get_url: dest={{ ansible_cache_dir }} url={{ android_sdk_download_url }}
+  when: sdk_exist.stat.exists == false
+
+#- name: Create directory
+#  file: path=/opt/Arsenal/{{ android_folder }} state=directory
+#  sudo: no
+
+- name: Create android android_folder
+  sudo: no
+  command: mkdir /opt/Arsenal/{{ android_folder }}
+  ignore_errors: true
+
+- name: change permission of sdk_folder
+  become: yes
+  become_method: sudo
+  action: file path=/opt/Arsenal/{{ android_folder }} recurse=yes state=directory owner={{ user_name.stdout }} group={{ user_group.stdout }}
+
+
+- name: unpack Android SDK
+  action: unarchive copy=no src={{ ansible_cache_dir }}/{{ android_zipfile }} dest=/opt/Arsenal/
+  sudo: no
+
+- name: chown files
+  action: file path=/opt/Arsenal/{{ android_folder }} recurse=yes state=directory owner={{ user_name.stdout }} group={{ user_group.stdout }}
+
+
+- name: install android platform-tools
+  action: shell creates=/opt/Arsenal/{{ android_folder }}/platform-tools echo y | /opt/Arsenal/{{ android_folder }}/tools/android update sdk --no-ui --all --filter platform-tool-20,build-tools-19.1,sdk-tools-24.0.2
+  sudo: no
+
+- name: Link sdk inside studio
+  command: ln -s /opt/Arsenal/{{ android_folder }} /opt/Arsenal/{{ studio_folder }}/sdk
+  ignore_errors: true
+
+- name: add ANDROID_HOME
+  action: lineinfile dest={{ user_home.stdout }}/.bashrc line="{{ item }}"
+  with_items:
+  - 'export ANDROID_HOME=/opt/Arsenal/{{ android_folder }}'
+  - 'export ANDROID_TOOLS=$ANDROID_HOME/tools/'
+  - 'export ANDROID_PLATFORM_TOOLS=$ANDROID_HOME/platform-tools/'
+  - 'export ANDROID_PLATFORM_BUILD=$ANDROID_HOME/build-tools/21.1.2/'
+  - 'export ANDROID_STUDIO_BIN=/opt/Arsenal/{{ studio_folder }}/bin'
+  - 'export ANDROID_NDK=/opt/Arsenal/{{ android_ndk_folder }}/bin'
+  - 'export PATH=$PATH:$ANDROID_TOOLS:$ANDROID_NDK:$ANDROID_PLATFORM_TOOLS:$ANDROID_STUDIO_BIN:$ANDROID_PLATFORM_BUILD'
+  sudo: no
+
+- name: add ANDROID_HOME
+  action: lineinfile dest={{ user_home.stdout }}/.zshrc line="{{ item }}"
+  with_items:
+  - 'export ANDROID_HOME=/opt/Arsenal/{{ android_folder }}'
+  - 'export ANDROID_TOOLS=$ANDROID_HOME/tools/'
+  - 'export ANDROID_PLATFORM_TOOLS=$ANDROID_HOME/platform-tools/'
+  - 'export ANDROID_PLATFORM_BUILD=$ANDROID_HOME/build-tools/21.1.2/'
+  - 'export ANDROID_STUDIO_BIN=/opt/Arsenal/{{ studio_folder }}/bin'
+  - 'export ANDROID_NDK=/opt/Arsenal/{{ android_ndk_folder }}/bin'
+  - 'export PATH=$PATH:$ANDROID_TOOLS:$ANDROID_NDK:$ANDROID_PLATFORM_TOOLS:$ANDROID_STUDIO_BIN:$ANDROID_PLATFORM_BUILD'
+  sudo: no

@@ -1,0 +1,21 @@
+---
+# - name: get ip address
+#   command: ifconfig
+- name: read hosts file
+  command: cat /etc/hosts
+- name: install packages
+  apt: pkg=htop state=latest
+  become: yes
+  become_method: sudo
+
+- name: install packages essential for development
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - proguard
+  - fastjar
+  - jaligner
+  - jarwrapper
+  - visualvm
+  - gradle

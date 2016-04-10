@@ -1,0 +1,9 @@
+---
+- name: install androidtamer-wallpaper packages
+  apt: pkg=androidtamer-wallpaper state=latest
+  become: yes
+  become_method: sudo
+
+
+- name: setup androidtamer-wallpaper
+  command: sh /vagrant/set_wallpaper.sh

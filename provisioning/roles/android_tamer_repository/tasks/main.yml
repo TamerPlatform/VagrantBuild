@@ -1,0 +1,47 @@
+---
+- name: Install PyCurl (required for apt-repository updates)
+  apt: pkg=python-pycurl
+  become: yes
+  become_method: sudo
+
+- name: Configure android Tamer repository
+  become: yes
+  become_method: sudo
+  apt_repository: repo="deb http://repo.androidtamer.com Tamer4 main"
+
+
+
+# - lineinfile: dest=/etc/apt/source.list.d/androidtamer 
+#               line="deb http://repo.androidtamer.com Tamer4 main"  
+#               state=present  
+#               owner=root 
+#               group=root 
+#               mode=0644
+#               create=True
+
+- name: Adding Apt key
+  become: yes
+  become_method: sudo
+  apt_key: id=7EE83BCF url=http://repo.androidtamer.com/tamer.gpg.key state=present
+
+- name: add backports repository
+  become: yes
+  become_method: sudo
+  apt_repository: repo='deb http://http.debian.net/debian jessie-backports main contrib non-free' state=present update_cache=yes
+
+- name: add non-free repository
+  become: yes
+  become_method: sudo
+  apt_repository: repo='deb http://ftp.us.debian.org/debian/ jessie main contrib non-free' state=present update_cache=yes
+
+
+
+#- name: Configure Ubuntu Mate official repositories
+#    become: yes
+#    become_method: sudo
+#  apt_repository: repo="ppa:ubuntu-mate-dev/ppa"
+
+#- name: add trusty Mate
+#    become: yes
+#   become_method: sudo
+#  apt_repository: repo="ppa:ubuntu-mate-dev/trusty-mate"

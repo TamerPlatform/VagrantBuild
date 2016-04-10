@@ -1,0 +1,30 @@
+---
+
+# - name: installing tamer menu
+#     become: yes
+#    become_method: sudo
+#   apt: pkg=android-tamer-menu status=latest
+
+# - name: configure Tamer menu / change icon to Tamer Icon
+#   command:
+
+# - name: disable screensaver
+#   command: 
+
+
+#- name: change grub boot menu image
+
+#- name: grub customization
+
+#- name: bootscreen splash
+
+#- name: change taskbar menu items
+
+#- name: change lightdm gtk greater screen
+
+#- name: set default font to roboto
+
+
+#- name: change defaults
+#desktop/applications/media exec 
+#desktop/applications/terminal exec

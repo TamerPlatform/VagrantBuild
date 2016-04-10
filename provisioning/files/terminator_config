@@ -1,0 +1,22 @@
+[global_config]
+[keybindings]
+  paste = <Primary>v
+[profiles]
+  [[default]]
+    background_image = None
+    login_shell = True
+    foreground_color = "#000000"
+    show_titlebar = False
+    copy_on_selection = True
+    background_color = "#ffffff"
+    scrollback_infinite = True
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = default
+    [[[window0]]]
+      type = Window
+      parent = ""
+[plugins]

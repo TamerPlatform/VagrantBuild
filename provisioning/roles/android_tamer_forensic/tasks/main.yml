@@ -1,0 +1,35 @@
+---
+- name: Forensics Tools
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - volatility
+  - lime-forensics-dkms
+  - autopsy
+  - dc3dd
+  - dcfldd
+  - dff
+  - ext4magic
+  - scalpel
+  - sleuthkit
+  - vinetto
+  - volatility-tools
+  - exif
+  - libimage-exif-perl
+  - exiv2
+  - python-exif
+  - metacam
+  - exiftags
+  - jhead
+  - exifprobe
+  - testdisk
+  - steghide
+  - iwatch
+  - forensics-all
+  - guymager
+  - rdd
+  - xmount
+  - fatcat
+  - foremost
+# - volatility-profiles

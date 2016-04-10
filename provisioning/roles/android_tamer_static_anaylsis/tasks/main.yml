@@ -1,0 +1,12 @@
+---
+- name: Static Anaylsis Tools
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - findbugs
+  - flawfinder
+  - ack-grep
+#  - mobilizer
+#  - androwarn
+#  - scandroid_paladion_script

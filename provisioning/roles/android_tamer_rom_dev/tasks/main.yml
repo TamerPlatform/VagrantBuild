@@ -1,0 +1,17 @@
+---
+- name: Android Rom Development
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - heimdall-flash
+  - heimdall-flash-frontend
+  - abootimg
+  - flashrom
+  - openocd
+  - usbprog
+  - usbprog-gui
+#  - dsixda-kitchen
+#  - jodin3
+#  - flashtool
+# https://sourceforge.net/projects/s-tar/files/  

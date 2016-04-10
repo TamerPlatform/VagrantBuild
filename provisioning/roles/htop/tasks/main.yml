@@ -1,0 +1,9 @@
+---
+# - name: get ip address
+#   command: ifconfig
+- name: read hosts file
+  command: cat /etc/hosts
+- name: install packages
+  apt: pkg=htop state=latest
+  become: yes
+  become_method: sudo

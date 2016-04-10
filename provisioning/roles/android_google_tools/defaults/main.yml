@@ -1,0 +1,15 @@
+---
+ansible_cache_dir: /opt/Arsenal/Cache
+android_version: "24.4.1"
+android_studio_version: "2.0.0.20"
+android_studio_build: "143.2739321"
+android_ndk_version: "r11c"
+studio_folder: "android-studio"
+android_ndk_folder: "android-ndk-{{android_ndk_version }}" 
+android_folder: "android-sdk-linux"
+android_zipfile: "android-sdk_r{{android_version}}-linux.tgz"
+android_ndk_zip: "android-ndk-{{android_ndk_version }}-linux-x86_64.zip"
+android_sdk_download_url: "http://dl.google.com/android/{{ android_zipfile }}"
+android_ndk_url: "http://dl.google.com/android/repository/{{ android_ndk_zip }}"
+studio_file_name: "android-studio-ide-{{ android_studio_build }}-linux.zip"
+studio_download_url: "https://dl.google.com/dl/android/studio/ide-zips/{{ android_studio_version }}/{{ studio_file_name }}"
