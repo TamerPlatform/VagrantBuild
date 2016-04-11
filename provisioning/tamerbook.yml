@@ -2,19 +2,19 @@
 - hosts: all
   sudo: false
   roles:
-#  - essentials
-#  - android_tamer_repository
-#  - android_tamer_essential
-#  - android_google_tools
-  # - android_sdk
-  # - android_tamer_development
-  # - android_tamer_dynamic_anaylsis
-  # - android_tamer_forensic
-  # - android_tamer_malware_re
-  # - android_tamer_pentest
-  # - android_tamer_rom_dev
-  # - android_tamer_rooting
-  # - android_tamer_static_anaylsis
-  # - android_tamer_ui
-  # - android_tamer_customtools
+  - essentials
+  - android_tamer_repository
+  - android_tamer_essential
+  - android_google_tools
+  - android_sdk
+  - android_tamer_development
+  - android_tamer_dynamic_anaylsis
+  - android_tamer_forensic
+  - android_tamer_malware_re
+  - android_tamer_pentest
+  - android_tamer_rom_dev
+  - android_tamer_rooting
+  - android_tamer_static_anaylsis
+  - android_tamer_ui
+  - android_tamer_customtools
   - android_tamer_wallpaper
