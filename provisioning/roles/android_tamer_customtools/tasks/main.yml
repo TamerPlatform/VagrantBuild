@@ -31,6 +31,14 @@
   - geany
   - geany-plugin-treebrowser
   
+- name: Tools utilities created by anantshri
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - apk2java
+  - drozer_checks
+  - androidtamer-adb
 
 
 
