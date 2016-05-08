@@ -37,7 +37,7 @@
   become_method: sudo
   apt: pkg="{{ item }}" state=latest
   with_items:
-  - MobSF
+  - mobsf
   - drozer
 #   - droidbox
 #   - androguard
