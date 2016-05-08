@@ -37,7 +37,7 @@
   apt: pkg="{{ item }}" state=latest
   with_items:
   - apk2java
-  - drozer_checks
+  - drozer-checks
   - androidtamer-adb
 
 
