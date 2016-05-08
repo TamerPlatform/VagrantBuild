@@ -159,6 +159,7 @@
   - mtp-tools
   - bpython
   - cherrytree
+  - curl
 
 # Fonts also need to go and google fonts need to be installed"
   
@@ -219,4 +220,5 @@
 
 - name: Set terminator as default shell
   command: update-alternatives --set x-terminal-emulator /usr/bin/terminator
-
+  become: yes
+  become_method: sudo
