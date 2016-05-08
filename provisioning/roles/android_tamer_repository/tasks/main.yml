@@ -2,7 +2,7 @@
 - name: Install PyCurl (required for apt-repository updates)
   become: yes
   become_method: sudo
-  pt: pkg="{{ item }}" state=latest
+  apt: pkg="{{ item }}" state=latest
   with_items:
   - python-pycurl
   - apt-transport-https
