@@ -11,7 +11,8 @@
   - openocd
   - usbprog
   - usbprog-gui
+  - jodin
+  - spflashtool
 #  - dsixda-kitchen
-#  - jodin3
 #  - flashtool
 # https://sourceforge.net/projects/s-tar/files/  
