@@ -5,5 +5,5 @@
   become_method: sudo
 
 
-- name: setup androidtamer-wallpaper
-  command: sh /vagrant/set_wallpaper.sh
+# - name: setup androidtamer-wallpaper
+#   command: sh /vagrant/set_wallpaper.sh
