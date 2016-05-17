@@ -1,16 +1,19 @@
 ---
+- name: install packages essential for tamer Specific  UI
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - androidtamer-menu
+  - androidtamer-menuitems
+  
 
-# - name: installing tamer menu
-#     become: yes
-#    become_method: sudo
-#   apt: pkg=android-tamer-menu status=latest
+# Change default Terminal to Terminator. SEt profile
 
-# - name: configure Tamer menu / change icon to Tamer Icon
-#   command:
-
-# - name: disable screensaver
-#   command: 
-
+- name: Set terminator as default shell
+  command: update-alternatives --set x-terminal-emulator /usr/bin/terminator
+  become: yes
+  become_method: sudo
 
 #- name: change grub boot menu image
 
