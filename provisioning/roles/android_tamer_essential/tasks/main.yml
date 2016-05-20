@@ -58,6 +58,20 @@
   - jadx
   - smali
 
+
+- name: install more androidsdk packages from default repositories
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+    - android-tools-adb
+    - android-tools-fastboot
+    - android-tools-fsutils
+    - androidsdk-ddms
+    - androidsdk-hierarchyviewer
+    - androidsdk-traceview
+    - androidsdk-uiautomatorviewer
+
 # "
 
 - name: Installing PIP
@@ -222,3 +236,7 @@
   command: update-alternatives --set x-terminal-emulator /usr/bin/terminator
   become: yes
   become_method: sudo
+
+- name: setting open alias for xdg-open
+  action: lineinfile dest={{ user_home.stdout }}/.bashrc line="alias open=xdg-open"
+  action: lineinfile dest={{ user_home.stdout }}/.zshrc line="alias open=xdg-open"
