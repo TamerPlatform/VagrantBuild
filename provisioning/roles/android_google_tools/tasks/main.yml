@@ -23,16 +23,16 @@
   - fonts-roboto
 
 
-- stat: path={{ ansible_cache_dir }}/{{ android_ndk_zip }} follow=yes
-  register: ndk_exist
-  ignore_errors: True
+# - stat: path={{ ansible_cache_dir }}/{{ android_ndk_zip }} follow=yes
+#   register: ndk_exist
+#   ignore_errors: True
 
-- name: downloading android-ndk
-  get_url: dest={{ ansible_cache_dir }} url={{ android_ndk_url }}
-  when: ndk_exist.stat.exists == false
+# - name: downloading android-ndk
+#   get_url: dest={{ ansible_cache_dir }} url={{ android_ndk_url }}
+#   when: ndk_exist.stat.exists == false
 
-- name: copy to arsenal
-  command: cp {{ ansible_cache_dir }}/{{ android_ndk_zip }} /opt/Arsenal/
+# - name: copy to arsenal
+#   command: cp {{ ansible_cache_dir }}/{{ android_ndk_zip }} /opt/Arsenal/
 
 #- name: chown files
 #  command: chmod a+x /opt/Arsenal/{{ android_ndk_zip }}
