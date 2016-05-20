@@ -37,9 +37,9 @@
 #- name: chown files
 #  command: chmod a+x /opt/Arsenal/{{ android_ndk_zip }}
 
-- name: unpack Android NDK
-  action: unarchive copy=no src={{ ansible_cache_dir }}/{{ android_ndk_zip }} dest=/opt/Arsenal/
-  sudo: no
+# - name: unpack Android NDK
+#   action: unarchive copy=no src={{ ansible_cache_dir }}/{{ android_ndk_zip }} dest=/opt/Arsenal/
+#   sudo: no
 
 - stat: path={{ ansible_cache_dir }}/{{ studio_file_name }} follow=yes
   register: studio_exist
@@ -118,8 +118,9 @@
   - 'export ANDROID_PLATFORM_TOOLS=$ANDROID_HOME/platform-tools/'
   - 'export ANDROID_PLATFORM_BUILD=$ANDROID_HOME/build-tools/21.1.2/'
   - 'export ANDROID_STUDIO_BIN=/opt/Arsenal/{{ studio_folder }}/bin'
-  - 'export ANDROID_NDK=/opt/Arsenal/{{ android_ndk_folder }}/bin'
-  - 'export PATH=$PATH:$ANDROID_TOOLS:$ANDROID_NDK:$ANDROID_PLATFORM_TOOLS:$ANDROID_STUDIO_BIN:$ANDROID_PLATFORM_BUILD'
+  - 'export PATH=$PATH:$ANDROID_TOOLS:$ANDROID_PLATFORM_TOOLS:$ANDROID_STUDIO_BIN:$ANDROID_PLATFORM_BUILD'
+  # - 'export ANDROID_NDK=/opt/Arsenal/{{ android_ndk_folder }}/bin'
+  # - 'export PATH=$PATH:$ANDROID_TOOLS:$ANDROID_NDK:$ANDROID_PLATFORM_TOOLS:$ANDROID_STUDIO_BIN:$ANDROID_PLATFORM_BUILD'
   sudo: no
 
 - name: add ANDROID_HOME
@@ -130,6 +131,7 @@
   - 'export ANDROID_PLATFORM_TOOLS=$ANDROID_HOME/platform-tools/'
   - 'export ANDROID_PLATFORM_BUILD=$ANDROID_HOME/build-tools/21.1.2/'
   - 'export ANDROID_STUDIO_BIN=/opt/Arsenal/{{ studio_folder }}/bin'
-  - 'export ANDROID_NDK=/opt/Arsenal/{{ android_ndk_folder }}/bin'
-  - 'export PATH=$PATH:$ANDROID_TOOLS:$ANDROID_NDK:$ANDROID_PLATFORM_TOOLS:$ANDROID_STUDIO_BIN:$ANDROID_PLATFORM_BUILD'
+  - 'export PATH=$PATH:$ANDROID_TOOLS:$ANDROID_PLATFORM_TOOLS:$ANDROID_STUDIO_BIN:$ANDROID_PLATFORM_BUILD'
+  # - 'export ANDROID_NDK=/opt/Arsenal/{{ android_ndk_folder }}/bin'
+  # - 'export PATH=$PATH:$ANDROID_TOOLS:$ANDROID_NDK:$ANDROID_PLATFORM_TOOLS:$ANDROID_STUDIO_BIN:$ANDROID_PLATFORM_BUILD'
   sudo: no
