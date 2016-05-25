@@ -64,8 +64,6 @@
   become_method: sudo
   apt: pkg="{{ item }}" state=latest
   with_items:
-    - android-tools-adb
-    - android-tools-fastboot
     - android-tools-fsutils
     - androidsdk-ddms
     - androidsdk-hierarchyviewer
@@ -239,4 +237,6 @@
 
 - name: setting open alias for xdg-open
   action: lineinfile dest={{ user_home.stdout }}/.bashrc line="alias open=xdg-open"
+
+- name: setting alias
   action: lineinfile dest={{ user_home.stdout }}/.zshrc line="alias open=xdg-open"
