@@ -1,3 +1,5 @@
 #!/bin/bash
-sudo apt-get install localepurge
-sudo localepurge
+mkdir /var/lib/apt/lists
+mkdir /var/cache/apt/archives/
+apt-get autoremove
+rm -rf /home/android/.ssh/authorized_keys
