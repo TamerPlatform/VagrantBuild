@@ -24,6 +24,12 @@
   become_method: sudo
   apt: upgrade=dist
 
+- name: Installing ca-certificates-java from backports
+  become: yes
+  become_method: sudo
+  apt: name=ca-certificates-java state=latest default_release=jessie-backports update_cache=yes
+
+
 - name: install packages essential for android
   become: yes
   become_method: sudo
