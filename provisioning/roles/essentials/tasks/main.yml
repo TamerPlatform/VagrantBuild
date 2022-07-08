@@ -1,12 +1,4 @@
 ---
-- name: install packages essential for ansible+vagrant stuff
-  become: yes
-  become_method: sudo
-  apt: pkg="{{ item }}" state=latest
-  with_items:
-  - python-apt
-  - python-pycurl
-
 - name: update the system
   become: yes
   become_method: sudo
@@ -16,3 +8,21 @@
   become: yes
   become_method: sudo 
   apt: upgrade=full
+
+- name: install packages essential for ansible+vagrant stuff
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - python3-pycurl
+
+
+- name: install packages essential for normal operations
+  become: yes
+  become_method: sudo
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+  - vim
+  - wget
+  - curl
+

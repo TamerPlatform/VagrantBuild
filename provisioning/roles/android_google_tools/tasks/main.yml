@@ -1,18 +1,18 @@
 ---
-- name: get the current users home
-  shell: echo $HOME
-  register: user_home
-  sudo: no
+# - name: get the current users home
+#   shell: echo $HOME
+#   register: user_home
+#   sudo: no
 
-- name: get the current users name
-  shell: id -u -n
-  register: user_name
-  sudo: no
+# - name: get the current users name
+#   shell: id -u -n
+#   register: user_name
+#   sudo: no
 
-- name: get the current users group
-  shell: id -g -n
-  register: user_group
-  sudo: no
+# - name: get the current users group
+#   shell: id -g -n
+#   register: user_group
+#   sudo: no
 
 
 - name: install Google Tools adb and others
@@ -38,12 +38,14 @@
   command: chmod a+x /opt/Arsenal/{{ android_ndk_zip }}
 
 - name: unpack Android NDK
-  action: unarchive copy=no src={{ ansible_cache_dir }}/{{ android_ndk_zip }} dest=/opt/Arsenal/
-  sudo: no
+  ansible.builtin.unarchive: 
+    copy=no 
+    src={{ ansible_cache_dir }}/{{ android_ndk_zip }} 
+    dest=/opt/Arsenal/
 
-- name: remove binary
-  command: rm /opt/Arsenal/{{ android_ndk_zip }}
-  sudo: no
+# - name: remove binary
+#   ansible.builtin.command: 
+#     cmd: rm /opt/Arsenal/{{ android_ndk_zip }}
 
 - name: rename ndk android
   command: mv /opt/Arsenal/{{ android_ndk_folder }} /opt/Arsenal/android-ndk
@@ -70,8 +72,10 @@
 
 
 - name: unpack Android Studio
-  action: unarchive copy=no src={{ ansible_cache_dir }}/{{ studio_file_name }} dest=/opt/Arsenal/
-  sudo: no
+  ansible.builtin.unarchive: 
+    copy=no 
+    src={{ ansible_cache_dir }}/{{ studio_file_name }} 
+    dest=/opt/Arsenal/
 
 # Need to match the usecase here
 - name: chown files
@@ -91,8 +95,7 @@
 #  sudo: no
 
 - name: Create android android_folder
-  sudo: no
-  command: mkdir /opt/Arsenal/{{ android_folder }}
+  ansible.builtin.command: mkdir /opt/Arsenal/{{ android_folder }}
   ignore_errors: true
 
 - name: change permission of sdk_folder
@@ -102,22 +105,24 @@
 
 
 - name: unpack Android SDK
-  action: unarchive copy=no src={{ ansible_cache_dir }}/{{ android_zipfile }} dest=/opt/Arsenal/
-  sudo: no
+  ansible.builtin.unarchive: 
+    copy=no 
+    src={{ ansible_cache_dir }}/{{ android_zipfile }} 
+    dest=/opt/Arsenal/
 
 - name: chown files
   action: file path=/opt/Arsenal/{{ android_folder }} recurse=yes state=directory owner={{ user_name.stdout }} group={{ user_group.stdout }}
 
 
-- name: install android platform-tools
-  action: shell creates=/opt/Arsenal/{{ android_folder }}/platform-tools echo y | /opt/Arsenal/{{ android_folder }}/tools/android update sdk --no-ui --all --filter platform-tool-20,build-tools-19.1,sdk-tools-24.0.2
-  sudo: no
+# - name: install android platform-tools
+#   ansible.builtin.shell: creates=/opt/Arsenal/{{ android_folder }}/platform-tools echo y | /opt/Arsenal/{{ android_folder }}/tools/android update sdk --no-ui --all --filter platform-tool-20,build-tools-19.1,sdk-tools-24.0.2
+#   sudo: no
 
 - name: Link sdk inside studio
   command: ln -s /opt/Arsenal/{{ android_folder }} /opt/Arsenal/{{ studio_folder }}/sdk
   ignore_errors: true
 
-- name: add ANDROID_HOME
+- name: add ANDROID_HOME bashrc
   action: lineinfile dest={{ user_home.stdout }}/.bashrc line="{{ item }}"
   with_items:
   - 'export ANDROID_HOME=/opt/Arsenal/{{ android_folder }}'
@@ -130,7 +135,7 @@
   - 'export PATH=$PATH:$ANDROID_TOOLS:$ANDROID_NDK:$ANDROID_PLATFORM_TOOLS:$ANDROID_STUDIO_BIN:$ANDROID_PLATFORM_BUILD'
   sudo: no
 
-- name: add ANDROID_HOME
+- name: add ANDROID_HOME zshrc
   action: lineinfile dest={{ user_home.stdout }}/.zshrc line="{{ item }}"
   with_items:
   - 'export ANDROID_HOME=/opt/Arsenal/{{ android_folder }}'

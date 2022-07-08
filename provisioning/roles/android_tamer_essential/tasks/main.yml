@@ -2,17 +2,14 @@
 - name: get the current users home
   shell: echo $HOME
   register: user_home
-  sudo: no
 
 - name: get the current users name
   shell: id -u -n
   register: user_name
-  sudo: no
 
 - name: get the current users group
   shell: id -g -n
   register: user_group
-  sudo: no
 
 - name: update apt-get cache 
   become: yes
@@ -27,7 +24,7 @@
 - name: Installing ca-certificates-java from backports
   become: yes
   become_method: sudo
-  apt: name=ca-certificates-java state=latest default_release=jessie-backports update_cache=yes
+  apt: name=ca-certificates-java state=latest default_release=bullseye-backports update_cache=yes
 
 
 - name: install packages essential for android
@@ -35,7 +32,7 @@
   become_method: sudo
   apt: pkg="{{ item }}" state=latest
   with_items:
-  - openjdk-7-jdk
+  - openjdk-11-jdk
   - default-jdk
   - openjdk-8-jdk
   - libc6-i386 
