@@ -49,6 +49,7 @@
 
 - name: rename ndk android
   command: mv /opt/Arsenal/{{ android_ndk_folder }} /opt/Arsenal/android-ndk
+  ignore_errors: true
 
 - stat: path={{ ansible_cache_dir }}/{{ studio_file_name }} follow=yes
   register: studio_exist
@@ -69,6 +70,7 @@
   become: yes
   become_method: sudo
   action: file path=/opt/Arsenal/{{ studio_folder }} recurse=yes state=directory owner={{ user_name.stdout }} group={{ user_group.stdout }}
+  ignore_errors: true
 
 
 - name: unpack Android Studio
@@ -80,6 +82,7 @@
 # Need to match the usecase here
 - name: chown files
   action: file path=/opt/Arsenal/{{ studio_folder }} recurse=yes state=directory owner={{ user_name.stdout }} group={{ user_group.stdout }}
+  ignore_errors: true
 
 - stat: path={{ ansible_cache_dir }}/{{ android_zipfile }} follow=yes
   register: sdk_exist
@@ -102,6 +105,7 @@
   become: yes
   become_method: sudo
   action: file path=/opt/Arsenal/{{ android_folder }} recurse=yes state=directory owner={{ user_name.stdout }} group={{ user_group.stdout }}
+  ignore_errors: true
 
 
 - name: unpack Android SDK
@@ -113,6 +117,7 @@
 
 - name: chown files
   action: file path=/opt/Arsenal/{{ android_folder }} recurse=yes state=directory owner={{ user_name.stdout }} group={{ user_group.stdout }}
+  ignore_errors: true
 
 
 # - name: install android platform-tools

@@ -1,11 +1,11 @@
 ---
-- name: install packages essential for tamer Specific  UI
-  become: yes
-  become_method: sudo
-  apt: pkg="{{ item }}" state=latest
-  with_items:
-  - androidtamer-menu
-  - androidtamer-menuitems
+# - name: install packages essential for tamer Specific  UI
+#   become: yes
+#   become_method: sudo
+#   apt: pkg="{{ item }}" state=latest
+#   with_items:
+#   - androidtamer-menu
+#   - androidtamer-menuitems
   
 
 # Change default Terminal to Terminator. SEt profile

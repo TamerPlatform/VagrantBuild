@@ -4,21 +4,21 @@
   become_method: sudo
   apt: pkg="{{ item }}" state=latest
   with_items:
-  - volatility
+  # - volatility
   - lime-forensics-dkms
   - autopsy
   - dc3dd
   - dcfldd
-  - dff
+  # - dff
   - ext4magic
   - scalpel
   - sleuthkit
   - vinetto
-  - volatility-tools
+  # - volatility-tools
   - exif
   - libimage-exif-perl
   - exiv2
-  - python-exif
+  - python3-exif
   - metacam
   - exiftags
   - jhead
@@ -28,7 +28,7 @@
   - iwatch
   - forensics-all
   - guymager
-  - rdd
+  # - rdd
   - xmount
   - fatcat
   - foremost

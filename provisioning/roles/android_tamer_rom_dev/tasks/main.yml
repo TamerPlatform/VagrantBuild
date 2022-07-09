@@ -9,10 +9,10 @@
   - abootimg
   - flashrom
   - openocd
-  - usbprog
-  - usbprog-gui
-  - j0din3
-  - spflashtool
+  # - usbprog
+  # - usbprog-gui
+  # - j0din3
+  # - spflashtool
 #  - dsixda-kitchen
 #  - flashtool
 # https://sourceforge.net/projects/s-tar/files/  

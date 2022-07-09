@@ -8,10 +8,10 @@
   # - gcc-i686-linux-android
   - jmtpfs
   - sqlcipher
-  - sqlite
+  - sqlite3
   - sqlitebrowser
   # - sqliteman
-  - keepnote
+  # - keepnote
   - qemu
   - qemu-system
   - qemu-system-arm
@@ -19,7 +19,7 @@
   - qemu-utils
   - jasmin-sable
   - meld
-  - python-meld3
+  - python3-meld3
 
 
 - name: notsure where this fits
@@ -27,18 +27,18 @@
   become_method: sudo
   apt: pkg="{{ item }}" state=latest
   with_items:
-  - python-frida
+  # - python3-frida
   - geany
   - geany-plugin-treebrowser
   
-- name: Tools utilities created by anantshri
-  become: yes
-  become_method: sudo
-  apt: pkg="{{ item }}" state=latest
-  with_items:
-  - apk2java
-  - drozer-checks
-  - androidtamer-adb
+# - name: Tools utilities created by anantshri
+#   become: yes
+#   become_method: sudo
+#   apt: pkg="{{ item }}" state=latest
+#   with_items:
+#   - apk2java
+#   - drozer-checks
+#   - androidtamer-adb
 
 
 

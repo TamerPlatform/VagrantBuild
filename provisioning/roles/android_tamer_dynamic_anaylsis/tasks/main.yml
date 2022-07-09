@@ -4,41 +4,43 @@
   become_method: sudo
   apt: pkg="{{ item }}" state=latest
   with_items:
-  - ipython
-  - python-dev
+  - ipython3
+  - python3-dev
   - libbz2-dev
   - libmuparser-dev
   - libsparsehash-dev
-  - python-ptrace
-  - python-pygments
-  - python-pydot
+  - python3-ptrace
+  - python3-pygments
+  - python3-pydot
   - graphviz
   - liblzma-dev
   - libsnappy-dev
-  - python-magic
+  - python3-magic
+  - python3-flask
+  
 
 - pip: name=bottle
   become: yes
   become_method: sudo
 
-- name: Installing flask from androidtamer
-  become: yes
-  become_method: sudo
-  apt: name=python-flask state=latest default_release=Tamer4 update_cache=yes
+# - name: Installing flask from androidtamer
+#   become: yes
+#   become_method: sudo
+#   apt: name=python-flask state=latest default_release=Tamer4 update_cache=yes
 
 
 - name: Installing Django from backports
   become: yes
   become_method: sudo
-  apt: name=python-django state=latest default_release=jessie-backports update_cache=yes
+  apt: name=python3-django state=latest default_release=bullseye-backports update_cache=yes
 
-- name: Dynamic Anaylsis Packages
-  become: yes
-  become_method: sudo
-  apt: pkg="{{ item }}" state=latest
-  with_items:
-  - mobsf
-  - drozer
+# - name: Dynamic Anaylsis Packages
+#   become: yes
+#   become_method: sudo
+#   apt: pkg="{{ item }}" state=latest
+#   with_items:
+#   - mobsf
+#   - drozer
 #   - droidbox
 #   - androguard
 #   - cobradroid
